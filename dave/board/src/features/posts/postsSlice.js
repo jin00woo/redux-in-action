@@ -35,13 +35,21 @@ const postsSlice = createSlice({
             content,
             userId,
             date: new Date().toISOString(),
+            reactions: { thumbsUp: 0, hooray: 0, heart: 0, rocket: 0, eyes: 0 },
           },
         };
       },
+    },
+    reactionAdded(state, action) {
+      const { postId, reaction } = action.payload;
+      const existingPost = state.find((post) => post.id === postId);
+      if (existingPost) {
+        existingPost.reactions[reaction]++;
+      }
     },
   },
 });
 
 export const selectAllPosts = (state) => state.posts;
-export const { postAdded } = postsSlice.actions;
+export const { postAdded, reactionAdded } = postsSlice.actions;
 export default postsSlice.reducer;
